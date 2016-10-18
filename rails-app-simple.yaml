@@ -1,5 +1,5 @@
 series: trusty
-applications: 
+services: 
   rails: 
     charm: "cs:precise/rails-3"
     num_units: 1
