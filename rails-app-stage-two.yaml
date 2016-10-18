@@ -1,0 +1,50 @@
+series: trusty
+applications: 
+  rails: 
+    charm: "cs:precise/rails-3"
+    num_units: 0
+    annotations: 
+      "gui-x": 300
+      "gui-y": 300
+  haproxy: 
+    charm: "cs:haproxy-37"
+    num_units: 0
+    annotations: 
+      "gui-x": 409
+      "gui-y": -23
+  postgresql: 
+    charm: "cs:postgresql-105"
+    num_units: 0
+    annotations: 
+      "gui-x": 701
+      "gui-y": 362
+  "redis-master": 
+    charm: "cs:precise/redis-master-7"
+    num_units: 0
+    annotations: 
+      "gui-x": 281
+      "gui-y": 589
+  "redis-slave": 
+    charm: "cs:precise/redis-slave-5"
+    num_units: 0
+    annotations: 
+      "gui-x": 497
+      "gui-y": 775
+  varnish: 
+    charm: "cs:trusty/varnish-2"
+    num_units: 0
+    annotations: 
+      "gui-x": -1
+      "gui-y": -136
+relations: 
+  - - "haproxy:reverseproxy"
+    - "rails:proxy"
+  - - "rails:postgresql"
+    - "postgresql:db"
+  - - "redis-slave:redis-master"
+    - "redis-master:redis-master"
+  - - "rails:redis"
+    - "redis-master:db"
+  - - "varnish:reverseproxy"
+    - "haproxy:website"
+

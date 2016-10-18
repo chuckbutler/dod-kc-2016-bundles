@@ -1,0 +1,123 @@
+series: xenial
+applications: 
+  "redis-master": 
+    charm: "cs:precise/redis-master-7"
+    num_units: 0
+    annotations: 
+      "gui-x": "109"
+      "gui-y": "557"
+  kibana: 
+    charm: "cs:trusty/kibana-15"
+    num_units: 0
+    annotations: 
+      "gui-x": "457"
+      "gui-y": "-402"
+  gluster: 
+    charm: "cs:trusty/gluster-0"
+    num_units: 1
+    annotations: 
+      "gui-x": "719.0200805664062"
+      "gui-y": "242.52192974090576"
+    to: 
+      - "0"
+  shoutcast: 
+    charm: "cs:trusty/shoutcast-2"
+    num_units: 0
+    annotations: 
+      "gui-x": "-2.8351287841796875"
+      "gui-y": "-360.3628845214844"
+  topbeat: 
+    charm: "cs:topbeat-5"
+    annotations: 
+      "gui-x": "426.245361328125"
+      "gui-y": "-145.10116577148438"
+  "redis-slave": 
+    charm: "cs:precise/redis-slave-5"
+    num_units: 0
+    annotations: 
+      "gui-x": "368"
+      "gui-y": "567"
+  elasticsearch: 
+    charm: "cs:trusty/elasticsearch-19"
+    num_units: 0
+    annotations: 
+      "gui-x": "818"
+      "gui-y": "-256"
+  rails: 
+    charm: "cs:precise/rails-3"
+    num_units: 0
+    annotations: 
+      "gui-x": "106"
+      "gui-y": "282"
+  logstash: 
+    charm: "cs:~lazypower/trusty/logstash-21"
+    num_units: 0
+    annotations: 
+      "gui-x": "619"
+      "gui-y": "-48.00001525878906"
+  filebeat: 
+    charm: "cs:filebeat-5"
+    annotations: 
+      "gui-x": "133.1566925048828"
+      "gui-y": "-46.91132068634033"
+  haproxy: 
+    charm: "cs:haproxy-37"
+    num_units: 0
+    annotations: 
+      "gui-x": "-223"
+      "gui-y": "272.00001525878906"
+  varnish: 
+    charm: "cs:trusty/varnish-2"
+    num_units: 0
+    annotations: 
+      "gui-x": "-221"
+      "gui-y": "-101"
+  postgresql: 
+    charm: "cs:postgresql-105"
+    num_units: 0
+    annotations: 
+      "gui-x": "413"
+      "gui-y": "278"
+relations: 
+  - - "filebeat:beats-host"
+    - "varnish:juju-info"
+  - - "filebeat:beats-host"
+    - "shoutcast:juju-info"
+  - - "elasticsearch:client"
+    - "kibana:rest"
+  - - "topbeat:beats-host"
+    - "shoutcast:juju-info"
+  - - "rails:redis"
+    - "redis-master:db"
+  - - "varnish:reverseproxy"
+    - "haproxy:website"
+  - - "redis-slave:redis-master"
+    - "redis-master:redis-master"
+  - - "elasticsearch:client"
+    - "logstash:elasticsearch"
+  - - "rails:postgresql"
+    - "postgresql:db"
+  - - "haproxy:reverseproxy"
+    - "rails:proxy"
+  - - "topbeat:beats-host"
+    - "gluster:juju-info"
+  - - "filebeat:logstash"
+    - "logstash:beat"
+  - - "filebeat:beats-host"
+    - "postgresql:juju-info"
+  - - "filebeat:beats-host"
+    - "haproxy:juju-info"
+  - - "filebeat:beats-host"
+    - "gluster:juju-info"
+  - - "topbeat:logstash"
+    - "logstash:beat"
+  - - "topbeat:beats-host"
+    - "haproxy:juju-info"
+  - - "topbeat:beats-host"
+    - "varnish:juju-info"
+  - - "topbeat:beats-host"
+    - "postgresql:juju-info"
+machines: 
+  "0": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=1 cpu-power=138 mem=1700 root-disk=10240"
